@@ -25,6 +25,10 @@ export class Episode extends BaseDataEntity {
   @Column({ type: 'integer' })
   duration: number;
 
-  @Column({ type: 'date', nullable: true })
-  publish_date?: string;
+  @Column({
+    type: 'timestamptz',
+    name: 'publish_date',
+    nullable: true,
+  })
+  publishDate?: string;
 }

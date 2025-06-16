@@ -49,8 +49,8 @@ async function bootstrap() {
   if (process.env.NODE_ENV !== 'production') {
     /// Config swagger
     const config = new DocumentBuilder()
-      .setTitle('Sarie api')
-      .setDescription('The Sarie API description')
+      .setTitle('Thamanya api')
+      .setDescription('The thamanya API description')
       .setVersion('1.0')
       .addBearerAuth()
       .build();

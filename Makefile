@@ -6,3 +6,6 @@ db-generate:
 
 db-migrate:
 	pnpm run typeorm migration:run
+
+db-seed:
+	pnpm run seed

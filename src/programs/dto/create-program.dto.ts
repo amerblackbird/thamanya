@@ -1,9 +1,12 @@
-import { IsString, IsNotEmpty, IsEnum, IsOptional, IsDateString } from 'class-validator';
-
-export enum ProgramType {
-  PODCAST = 'podcast',
-  DOCUMENTARY = 'documentary',
-}
+import {
+  IsDateString,
+  IsEnum,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  IsUUID,
+} from 'class-validator';
+import { ProgramType } from '../entities/program.entity';
 
 export class CreateProgramDto {
   @IsString()
@@ -17,9 +20,9 @@ export class CreateProgramDto {
   @IsEnum(ProgramType)
   type: ProgramType;
 
-  @IsString()
+  @IsUUID()
   @IsOptional()
-  category?: string;
+  categoryId?: string;
 
   @IsString()
   @IsOptional()
