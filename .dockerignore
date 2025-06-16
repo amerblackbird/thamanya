@@ -1,0 +1,30 @@
+.env
+.env.sample
+.env.production
+.development.env
+
+# test code
+**/*.test.*
+**/mocks
+
+# dependencies
+node_modules/**
+
+# generated content
+coverage/**
+
+.dockerignore
+
+npm-debug.log
+
+Dockerfile
+
+.git
+.gitignore
+.github
+
+.dist
+
+src/database/migrations/**.ts
+
+docker-compose.yml

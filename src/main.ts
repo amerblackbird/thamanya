@@ -4,8 +4,10 @@ import {
   NestFastifyApplication,
 } from '@nestjs/platform-fastify';
 import { AppModule } from './app.module';
-import helmet from '@fastify/helmet';
+import { ConfigService } from '@nestjs/config';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
+import helmet from '@fastify/helmet';
 import compression from '@fastify/compress';
 
 async function bootstrap() {
@@ -13,6 +15,14 @@ async function bootstrap() {
     AppModule,
     new FastifyAdapter(),
   );
+
+  const configService: ConfigService = app.get(ConfigService);
+
+  // Get api prefix
+  const apiPrefix: string | undefined = configService.get('app.apiPrefix');
+
+  // Add api prefix
+  app.setGlobalPrefix(apiPrefix ?? 'api/v1');
 
   // Enable CORS (Cross-Origin Resource Sharing)
   // This allows the application to accept requests from different origins,
@@ -33,7 +43,25 @@ async function bootstrap() {
   await app.register(compression);
 
   // Todo: add rate limiting, etc.
-  await app.listen(process.env.PORT ?? 3000);
+
+  // Enable api documentation with Swagger in development mode
+  // This will generate an interactive API
+  if (process.env.NODE_ENV !== 'production') {
+    /// Config swagger
+    const config = new DocumentBuilder()
+      .setTitle('Sarie api')
+      .setDescription('The Sarie API description')
+      .setVersion('1.0')
+      .addBearerAuth()
+      .build();
+
+    const document = SwaggerModule.createDocument(app, config);
+    SwaggerModule.setup(apiPrefix ?? 'api/v1', app, document);
+  }
+
+  const port: number | undefined = configService.get('app.port');
+
+  await app.listen(port ?? 3000);
 }
 
 bootstrap();
