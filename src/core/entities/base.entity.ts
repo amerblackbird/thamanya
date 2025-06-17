@@ -8,9 +8,18 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
+import { RecordMapResult } from '../resources';
+
+// Base toMap
+export interface ResourceToMap {
+  toMap(selection?: string[]): RecordMapResult<BaseDataEntity>;
+}
 
 // Each model in system have this fields.
-export abstract class BaseDataEntity extends BaseEntity {
+export abstract class BaseDataEntity
+  extends BaseEntity
+  implements ResourceToMap
+{
   @ApiProperty()
   @PrimaryGeneratedColumn('uuid')
   id: string;
@@ -42,7 +51,7 @@ export abstract class BaseDataEntity extends BaseEntity {
   })
   activatedAt: Date;
 
-  toMap(): any {
+  toMap(selection?: string[]): RecordMapResult<BaseDataEntity> {
     return {
       id: this.id,
       active: this.active,

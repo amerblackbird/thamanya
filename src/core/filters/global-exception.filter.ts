@@ -11,8 +11,6 @@ export class GlobalExceptionFilter implements ExceptionFilter {
     const response = ctx.getResponse<FastifyReply>();
     const req = ctx.getRequest<Request>();
 
-    console.log(exception);
-
     response.status(exception.status).send({
       ...exception,
       timestamp: new Date().toISOString(),

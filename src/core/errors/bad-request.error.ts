@@ -10,11 +10,11 @@
 import { HttpStatus } from '@nestjs/common';
 import { BusinessError } from './business.error';
 
-export class BadRequestError extends BusinessError<'bad_request'> {
+export class BadRequestError extends BusinessError<'ERROR_BAD_REQUEST'> {
   constructor({ message }: { message: string }) {
     super({
       name: 'Bad Request',
-      code: 'bad_request',
+      code: 'ERROR_BAD_REQUEST',
       message,
       status: HttpStatus.BAD_REQUEST,
     });

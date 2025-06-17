@@ -1,12 +1,12 @@
 import { HttpStatus } from '@nestjs/common';
-import { ErrorCode } from '../types';
+import { ERROR_CODES } from '../constants';
 
 /**
  * Parameters for constructing a BusinessError.
  *
  * @template Err - The error code type, extending ErrorCode.
  */
-export interface BusinessErrorParams<Err extends ErrorCode> {
+export interface BusinessErrorParams<Err extends keyof typeof ERROR_CODES> {
   /** Human-readable error message. */
   message: string;
   /** Name of the error. */
@@ -34,7 +34,7 @@ export interface BusinessErrorParams<Err extends ErrorCode> {
  * });
  */
 export class BusinessError<
-  Err extends ErrorCode,
+  Err extends keyof typeof ERROR_CODES,
   TMetadata extends Record<string, any> | undefined = undefined,
 > extends Error {
   /** Optional additional error context. */

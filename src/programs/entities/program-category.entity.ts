@@ -3,6 +3,7 @@ import { Column, Entity, Index, JoinColumn, ManyToOne } from 'typeorm';
 import { BaseDataEntity } from '../../core/entities/base.entity';
 import { Program } from './program.entity';
 import { Category } from '../../categories/entities/category.entity';
+import { RecordMapResult } from '../../core/resources';
 
 @Entity('tbl_program_categories')
 @Index(['programId', 'categoryId'], { unique: true })
@@ -24,4 +25,21 @@ export class ProgramCategory extends BaseDataEntity {
   })
   @JoinColumn({ name: 'category_id' })
   public category: Category;
+
+  toMap(selection?: string[]): RecordMapResult<Category> {
+    let rec: Record<string, any> = {
+      ...super.toMap(selection),
+      programId: this.programId,
+      categoryId: this.categoryId,
+    };
+
+    if (this.program) {
+      rec = {
+        ...rec,
+        program: this.program.toMap(),
+      };
+    }
+
+    return rec;
+  }
 }

@@ -42,7 +42,7 @@ interface InvalidArgumentsErrorMetadata {
  * Error class for invalid arguments.
  */
 export class InvalidArgumentsError extends BusinessError<
-  'invalid_arguments',
+  'ERROR_INVALID_ARGUMENTS',
   InvalidArgumentsErrorMetadata
 > {
   /**
@@ -53,7 +53,7 @@ export class InvalidArgumentsError extends BusinessError<
     super({
       message: 'Invalid argument(s) were provided',
       name: 'InvalidArgumentsError',
-      code: 'invalid_arguments',
+      code: 'ERROR_INVALID_ARGUMENTS',
     });
   }
 }
