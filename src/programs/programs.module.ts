@@ -4,10 +4,15 @@ import { ProgramsController } from './programs.controller';
 import { Program } from './entities/program.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ProgramCategory } from './entities/program-category.entity';
+import { CategoriesModule } from '../categories/categories.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Program, ProgramCategory])],
+  imports: [
+    TypeOrmModule.forFeature([Program, ProgramCategory]),
+    CategoriesModule,
+  ],
   controllers: [ProgramsController],
   providers: [ProgramsService],
+  exports: [ProgramsService],
 })
 export class ProgramsModule {}

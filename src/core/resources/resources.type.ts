@@ -14,7 +14,7 @@ export type RecordMapResult<T> = T | Partial<T> | Record<string, any>;
 
 export type ResBuilder<T> = () => Promise<T>;
 
-export type FindOneResult<T> = RecordMapResult<T> | null | undefined;
+export type FindOneResult<T> = T | null | undefined;
 
 export type DeleteResult<T> = Partial<T> | Partial<T>[] | undefined | any;
 
@@ -76,6 +76,7 @@ export interface IPaginationOption<T extends BaseDataEntity> {
   archivedMessage?: string;
   throwNotFoundException?: boolean;
   throwArchivedException?: boolean;
+  throwSomeRecordsNotFound?: boolean;
   embedded?: boolean;
   queryApplier?: QueryApplier<T>;
   queryRelations?: string[];

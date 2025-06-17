@@ -17,6 +17,9 @@ import { rethrow } from '@nestjs/core/helpers/rethrow';
 import { ERROR_MESSAGES } from '../constants';
 import { MAX_PAGINATION_LIMIT, Pagination } from './pagination';
 
+// Maximum execution time for queries in milliseconds
+export const MAX_EXECUTION_TIME = 2000;
+
 @Injectable()
 export class BaseService<T extends BaseDataEntity> {
   protected readonly resName: string;
@@ -53,9 +56,10 @@ export class BaseService<T extends BaseDataEntity> {
     options: ICreateOptions & {
       findMatch?: ResBuilder<T>;
       createDto: ResBuilder<T>;
+      onCreated?: (record: T) => void;
     },
   ): Promise<T> {
-    const { createDto, findMatch, ...opts } = options;
+    const { createDto, findMatch, onCreated, ...opts } = options;
     // Check match
     const existRecord = await findMatch?.();
 
@@ -82,6 +86,9 @@ export class BaseService<T extends BaseDataEntity> {
       accessById: options.createdById,
     });
 
+    // Call onCreated callback if provided
+    onCreated?.(result);
+
     return result;
   }
 
@@ -103,13 +110,13 @@ export class BaseService<T extends BaseDataEntity> {
       archivedMessage = ERROR_MESSAGES.ERROR_RECORD_ARCHIVE,
       // loadHardRel = true,
       queryApplier,
-      // filterData,
+      filterData,
     } = options;
     try {
       // Create query builder
       const builder = this._repository
         .createQueryBuilder(`${this.resName}`)
-        .maxExecutionTime(60000);
+        .maxExecutionTime(MAX_EXECUTION_TIME);
       if (loadArchived) {
         builder.withDeleted();
       }
@@ -130,10 +137,6 @@ export class BaseService<T extends BaseDataEntity> {
       //   this._applyFilters(builder, type, recFilters);
       // }
       //
-      // // Apply select fields
-      // if (this.filters.length > 0 && filterData) {
-      //   this._addFilters(builder, this.filters, filterData);
-      // }
 
       if (builder.expressionMap.wheres.length > 0) {
         // Apply find by id where clause.
@@ -145,6 +148,11 @@ export class BaseService<T extends BaseDataEntity> {
         builder.where(`${this.resName}.id = :id`, {
           id: id,
         });
+      }
+
+      // Apply active filter
+      if (filterData && (this._filters?.length ?? 0) > 0) {
+        this.applyFilters(builder, filterData);
       }
 
       /// Apply query.
@@ -176,7 +184,7 @@ export class BaseService<T extends BaseDataEntity> {
     }
   }
 
-  protected async _paginateV2(
+  protected async _paginate(
     type: { new (): T },
     options: IPaginationOption<T> = {},
   ): Promise<RecordMapResult<T>> {
@@ -197,7 +205,7 @@ export class BaseService<T extends BaseDataEntity> {
       // sortOrder = 'ASC',
       // queryFields,
       // embedded,
-      // filterData,
+      filterData,
     } = options;
 
     // Create builder
@@ -205,7 +213,7 @@ export class BaseService<T extends BaseDataEntity> {
     try {
       const builder = this._repository
         .createQueryBuilder(`${this.resName}`)
-        .maxExecutionTime(20000);
+        .maxExecutionTime(MAX_EXECUTION_TIME);
 
       if (active !== undefined) {
         builder.where(`${this.resName}.active = :active`, {
@@ -232,9 +240,10 @@ export class BaseService<T extends BaseDataEntity> {
       // }
 
       // Apply select fields
-      // if (this.filters.length > 0 && filterData) {
-      //   this._addFilters(builder, this.filters, filterData, embedded);
-      // }
+      if (filterData && (this._filters?.length ?? 0) > 0) {
+        this.applyFilters(builder, filterData);
+      }
+
       //
       // if (query) {
       //   this._applyQuery(builder, type, query, [], queryFields);
@@ -270,8 +279,6 @@ export class BaseService<T extends BaseDataEntity> {
       }
 
       const [records, total] = await builder.getManyAndCount();
-
-      this._logger.debug(`Total ${total} : ${records?.length}`);
 
       const entries = records.map((e) => e.toMap(selection));
 
@@ -346,7 +353,9 @@ export class BaseService<T extends BaseDataEntity> {
     options: IRemoveOptions<T>,
   ): Promise<T | T[] | undefined> {
     const { queryApplier, many, filterData, ...rest } = options;
-    const builder = this._repository.createQueryBuilder(`${this.resName}`);
+    const builder = this._repository
+      .createQueryBuilder(`${this.resName}`)
+      .maxExecutionTime(MAX_EXECUTION_TIME);
 
     // Apply query filters
     queryApplier?.call(this, builder);
@@ -399,6 +408,44 @@ export class BaseService<T extends BaseDataEntity> {
       status: 'success',
     });
     return record;
+  }
+
+  protected async _findByIds(
+    ids: string[],
+    type: { new (): T },
+    options: IPaginationOption<T> = {},
+  ): Promise<T[]> {
+    const { queryApplier, filterData, throwSomeRecordsNotFound } = options;
+
+    // Create builder
+    const builder = this._repository
+      .createQueryBuilder(`${this.resName}`)
+      .maxExecutionTime(MAX_EXECUTION_TIME);
+
+    /// Apply query.
+    queryApplier?.(builder);
+
+    // Apply select fields
+    if (filterData && (this._filters?.length ?? 0) > 0) {
+      this.applyFilters(builder, filterData);
+    }
+
+    builder.whereInIds(ids).take(MAX_PAGINATION_LIMIT);
+
+    try {
+      const records = await builder.getMany();
+
+      if (throwSomeRecordsNotFound && records.length < ids.length) {
+        throw new BadRequestError({
+          message: `Some of ${this.resName} records were not found.`,
+        });
+      }
+
+      return records;
+    } catch (e) {
+      this._logger.error(e);
+      rethrow(e);
+    }
   }
 
   /**

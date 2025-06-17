@@ -1,14 +1,18 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { IsString } from 'class-validator';
 
 export class CreateCategoryDto {
-  // Define properties for the CreateCategoryDto here
-  // For example:
-  @ApiProperty({ description: 'Name of the category' })
+  @ApiProperty({
+    description: 'Name of the category',
+    example: 'Technology',
+  })
   @IsString()
   title: string;
 
-  @ApiProperty({ description: 'Description of the category', required: false })
+  @ApiPropertyOptional({
+    description: 'Description of the category',
+    example: 'All about the latest in tech and innovation.',
+  })
   @IsString()
   description?: string;
 }

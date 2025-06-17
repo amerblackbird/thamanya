@@ -1,34 +1,66 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  ParseUUIDPipe,
+  Patch,
+  Post,
+  UseFilters,
+  ValidationPipe,
+} from '@nestjs/common';
 import { ProgramsService } from './programs.service';
 import { CreateProgramDto } from './dto/create-program.dto';
 import { UpdateProgramDto } from './dto/update-program.dto';
+import { RequestInfo } from '../core/decorators';
+import { IRequestOptions } from '../core/interfaces';
+import { ApiTags } from '@nestjs/swagger';
+import { GlobalExceptionFilter } from '../core/filters';
 
+@ApiTags('Programs')
 @Controller('programs')
+@UseFilters(new GlobalExceptionFilter())
 export class ProgramsController {
   constructor(private readonly programsService: ProgramsService) {}
 
   @Post()
-  create(@Body() createProgramDto: CreateProgramDto) {
-    return this.programsService.create(createProgramDto);
+  create(
+    @Body(new ValidationPipe({ transform: true, whitelist: true }))
+    createProgramDto: CreateProgramDto,
+    @RequestInfo() reqInfo: IRequestOptions,
+  ) {
+    return this.programsService.create(createProgramDto, reqInfo);
   }
 
   @Get()
-  findAll() {
-    return this.programsService.findAll();
+  findAll(@RequestInfo() reqInfo: IRequestOptions) {
+    return this.programsService.findAll(reqInfo);
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.programsService.findOne(+id);
+  findOne(
+    @Param('id', new ParseUUIDPipe({})) id: string,
+    @RequestInfo() reqInfo: IRequestOptions,
+  ) {
+    return this.programsService.findOne(id, reqInfo);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateProgramDto: UpdateProgramDto) {
-    return this.programsService.update(+id, updateProgramDto);
+  update(
+    @Param('id', new ParseUUIDPipe({})) id: string,
+    @Body(new ValidationPipe({ transform: true, whitelist: true }))
+    updateProgramDto: UpdateProgramDto,
+    @RequestInfo() reqInfo: IRequestOptions,
+  ) {
+    return this.programsService.update(id, updateProgramDto, reqInfo);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.programsService.remove(+id);
+  remove(
+    @Param('id', new ParseUUIDPipe({})) id: string,
+    @RequestInfo() reqInfo: IRequestOptions,
+  ) {
+    return this.programsService.remove(id, reqInfo);
   }
 }

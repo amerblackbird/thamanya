@@ -40,6 +40,13 @@ export class ProgramCategory extends BaseDataEntity {
       };
     }
 
+    if (this.category) {
+      rec = {
+        ...rec,
+        category: this.category.toMap(),
+      };
+    }
+
     return rec;
   }
 }

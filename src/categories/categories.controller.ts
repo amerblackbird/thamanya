@@ -4,6 +4,7 @@ import {
   Delete,
   Get,
   Param,
+  ParseUUIDPipe,
   Patch,
   Post,
   UseFilters,
@@ -14,6 +15,8 @@ import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { GlobalExceptionFilter } from '../core/filters';
+import { RequestInfo } from '../core/decorators';
+import { IRequestOptions } from '../core/interfaces';
 
 @ApiTags('Categories')
 @Controller('categories')
@@ -25,40 +28,39 @@ export class CategoriesController {
   create(
     @Body(new ValidationPipe({ transform: true, whitelist: true }))
     createCategoryDto: CreateCategoryDto,
+    @RequestInfo() reqInfo: IRequestOptions,
   ) {
-    return this.categoriesService.create(createCategoryDto, {
-      lang: 'en',
-    });
+    return this.categoriesService.create(createCategoryDto, reqInfo);
   }
 
   @Get()
-  findAll() {
-    return this.categoriesService.findAll({
-      lang: 'en',
-    });
+  findAll(@RequestInfo() reqInfo: IRequestOptions) {
+    return this.categoriesService.findAll(reqInfo);
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.categoriesService.findOne(id, {
-      lang: 'en',
-    });
+  findOne(
+    @Param('id', new ParseUUIDPipe({})) id: string,
+    @RequestInfo() reqInfo: IRequestOptions,
+  ) {
+    return this.categoriesService.findOne(id, reqInfo);
   }
 
   @Patch(':id')
   update(
-    @Param('id') id: string,
-    @Body() updateCategoryDto: UpdateCategoryDto,
+    @Param('id', new ParseUUIDPipe({})) id: string,
+    @Body(new ValidationPipe({ transform: true, whitelist: true }))
+    updateCategoryDto: UpdateCategoryDto,
+    @RequestInfo() reqInfo: IRequestOptions,
   ) {
-    return this.categoriesService.update(id, updateCategoryDto, {
-      lang: 'en',
-    });
+    return this.categoriesService.update(id, updateCategoryDto, reqInfo);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.categoriesService.remove(id, {
-      lang: 'en',
-    });
+  remove(
+    @Param('id', new ParseUUIDPipe({})) id: string,
+    @RequestInfo() reqInfo: IRequestOptions,
+  ) {
+    return this.categoriesService.remove(id, reqInfo);
   }
 }

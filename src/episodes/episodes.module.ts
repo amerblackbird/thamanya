@@ -3,9 +3,10 @@ import { EpisodesService } from './episodes.service';
 import { EpisodesController } from './episodes.controller';
 import { Episode } from './entities/episode.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { ProgramsModule } from '../programs/programs.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Episode])],
+  imports: [TypeOrmModule.forFeature([Episode]), ProgramsModule],
   controllers: [EpisodesController],
   providers: [EpisodesService],
 })

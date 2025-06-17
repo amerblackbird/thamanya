@@ -7,7 +7,6 @@ import { Repository } from 'typeorm';
 import {
   BaseService,
   DeleteResult,
-  FindOneResult,
   ICreateOptions,
   IFindOneOptions,
   IPaginationOption,
@@ -44,13 +43,17 @@ export class CategoriesService extends BaseService<Category> {
   }
 
   async findAll(options: IPaginationOption<Category>) {
-    return await this._paginateV2(Category, options);
+    return await this._paginate(Category, options);
+  }
+
+  async findByIds(ids: string[], options: IPaginationOption<Category>) {
+    return await this._findByIds(ids, Category, options);
   }
 
   async findOne(
     id: string,
     options: IFindOneOptions<Category>,
-  ): Promise<FindOneResult<Category>> {
+  ): Promise<Category | null | undefined> {
     return this._findOne(id, Category, options);
   }
 
