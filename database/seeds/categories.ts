@@ -1,5 +1,5 @@
 import { Repository } from 'typeorm';
-import { Category } from '../../src/programs/entities/category.entity';
+import { Category } from '../../src/categories/entities/category.entity';
 import { Logger } from '@nestjs/common';
 
 const categoriesSeedData = [

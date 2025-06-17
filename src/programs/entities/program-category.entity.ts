@@ -2,7 +2,7 @@ import { Column, Entity, Index, JoinColumn, ManyToOne } from 'typeorm';
 
 import { BaseDataEntity } from '../../core/entities/base.entity';
 import { Program } from './program.entity';
-import { Category } from './category.entity';
+import { Category } from '../../categories/entities/category.entity';
 
 @Entity('tbl_program_categories')
 @Index(['programId', 'categoryId'], { unique: true })

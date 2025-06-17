@@ -11,6 +11,7 @@ import { CacheModule } from '@nestjs/cache-manager';
 import { CacheableMemory } from 'cacheable';
 import { createKeyv } from '@keyv/redis';
 import { Keyv } from 'keyv';
+import { CategoriesModule } from './categories/categories.module';
 
 import databaseConfig from './core/config/database.config';
 import authConfig from './core/config/auth.config';
@@ -71,6 +72,7 @@ import cacheConfig from './core/config/cache.config';
     SharedModule,
     ProgramsModule,
     EpisodesModule,
+    CategoriesModule,
   ],
   controllers: [AppController],
   providers: [AppService],

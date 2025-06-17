@@ -2,7 +2,7 @@ import CategoriesSeed from './categories';
 import AppManager from '../../typeorm.config';
 import ProgramsSeed from './programs';
 import { Program } from '../../src/programs/entities/program.entity';
-import { Category } from '../../src/programs/entities/category.entity';
+import { Category } from '../../src/categories/entities/category.entity';
 
 AppManager.initialize()
   .then(async () => {

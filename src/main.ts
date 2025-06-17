@@ -9,12 +9,16 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 import helmet from '@fastify/helmet';
 import compression from '@fastify/compress';
+import { CustomValidationPipe } from './core/pipes/validation.pipe';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
     AppModule,
     new FastifyAdapter(),
   );
+
+  // Custom validation pipe to handle DTO validation
+  app.useGlobalPipes(new CustomValidationPipe());
 
   const configService: ConfigService = app.get(ConfigService);
 
