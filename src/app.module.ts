@@ -1,8 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import { SharedModule } from './shared/shared.module';
+import { ScheduleModule } from '@nestjs/schedule';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { CacheModule } from '@nestjs/cache-manager';
@@ -13,10 +11,8 @@ import { CmsModule } from './modules/cms/cms.module';
 import { DiscoveryModule } from './modules/discovery/discovery.module';
 
 import databaseConfig from './core/config/database.config';
-import authConfig from './core/config/auth.config';
 import appConfig from './core/config/app.config';
 import cacheConfig from './core/config/cache.config';
-import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
   imports: [
@@ -24,7 +20,7 @@ import { ScheduleModule } from '@nestjs/schedule';
       envFilePath:
         process.env.NODE_ENV === 'production' ? '.env' : '.development.env',
       isGlobal: true,
-      load: [databaseConfig, authConfig, appConfig, cacheConfig],
+      load: [databaseConfig, appConfig, cacheConfig],
     }),
     CacheModule.registerAsync({
       useFactory: () => {
@@ -70,11 +66,8 @@ import { ScheduleModule } from '@nestjs/schedule';
       ],
     }),
     ScheduleModule.forRoot(),
-    SharedModule,
     CmsModule,
     DiscoveryModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
 })
 export class AppModule {}

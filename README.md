@@ -1,99 +1,219 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# Thamanya API
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+Thamanya is a powerful API designed to provide access to a wide range of media content, including TV shows, movies, and
+more. Built with NestJS, it offers a robust and scalable solution for media management and retrieval.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+> built with
+> Web Framework [NestJS](https://docs.nestjs.com)
+> Database [PostgreSQL](https://www.postgresql.org)
+> ORM [TypeORM](https://typeorm.io),
+> Redis [Redis](https://redis.io)
+> and TypeScript [TypeScript](https://www.typescriptlang.org).
+> Swagger [OpenAPI](https://swagger.io/specification/)
 
-## Description
+- [Thamanya API](#thamanya-api)
+    - [Included](#included)
+    - [Features](#features)
+    - [Installation & Setup](#installation--setup)
+    - [Code Tour](#code-tour)
+    - [Endpoints](#endpoints)
+    - [References](#references)
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## Included
 
-## Project setup
+- **Media Management**: Manage TV programs, episodes and categories.
+- **Search Functionality**: Full-text search capabilities for media content.
+- **Rate Limiting**: Protect against abuse with rate limiting.
+- **Logging**: Comprehensive logging for debugging and monitoring.
+- **Caching**: In-memory caching for improved performance.
+- **Environment Configuration**: Easy setup with environment variables.
+- **Task Scheduling**: Scheduled tasks for periodic operations.
+- **structured**: Organized codebase with clear separation of concerns.
 
-```bash
-$ pnpm install
-```
+## Features
 
-## Compile and run the project
+- **Media Management**: Create, update, and delete TV programs, episodes and categories.
+- **Search**: Full-text search for programs and episodes.
+- **Discover**: Browse media content by categories and programs.
 
-```bash
-# development
-$ pnpm run start
+## Installation & Setup
 
-# watch mode
-$ pnpm run start:dev
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/amerblackbird/thamanya.git
+   cd thamanya
+   ```
 
-# production mode
-$ pnpm run start:prod
-```
-
-## Run tests
-
-```bash
-# unit tests
-$ pnpm run test
-
-# e2e tests
-$ pnpm run test:e2e
-
-# test coverage
-$ pnpm run test:cov
-```
-
-## Deployment
-
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+2. **Install dependencies**
 
 ```bash
-$ pnpm install -g mau
-$ mau deploy
+   pnpm install
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+3. **Initialize environment variables**
+    - For development:
+      ```bash
+      pnpm run init:env
+      ```
+    - For production:
+      ```bash
+      NODE_ENV=production pnpm run init:env
+      ```
+      
+    >   This copies `.env.example` to `.development.env` (development) or `.env` (production).
 
-## Resources
 
-Check out a few resources that may come in handy when working with NestJS:
+4. **Edit your environment file**  
+   Update the values in `.development.env` or `.env` as needed.
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
 
-## Support
+5. **Prepare database**  
+   Ensure your database is set up. Before running migrations, add the `uuid-ossp` extension to your PostgreSQL database:
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+    ```sql
+       CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+    ```
 
-## Stay in touch
+    Generate the migration file:
+    
+    ```bash
+      pnpm run typeorm migration:generate ./database/migrations/migration
+    ```
+    
+    Then run the migrations:
+    
+    ```bash
+       pnpm run migration:run
+    ```
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+    Executing the above command will create the necessary tables in your database.
+    
+    ```sql
+       create index IF NOT EXISTS episodes_search_idx ON tbl_episodes USING GIN (search_vector);
+       create index IF NOT EXISTS programs_search_idx ON tbl_programs USING GIN (search_vector);
+    ```
 
-## License
+6. **Run the application**
+    - Development:
+      ```bash
+      pnpm run start
+      ```
+    - Watch mode:
+      ```bash
+      pnpm run start:dev
+      ```
+    - Production:
+      ```bash
+      pnpm run start:prod
+      ```
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+## Code Tour
+
+### The codebase is organized into several directories, each serving a specific purpose:
+
+- **`database`**: Database-related files, including migrations and entities.
+- **`src`**: Contains the main application code.
+    - **`modules`**: Contains following modules:
+        - **`cms`**: Manages TV programs, categories, episodes including CRUD operations and search functionality.
+            - **`programs`**: Handles TV programs, including CRUD operations and search functionality.
+            - **`categories`**: Manages categories for TV programs, including CRUD operations.
+            - **`episodes`**: Manages TV episodes, including CRUD operations and search functionality.
+        - **`discover`**: Provides endpoints for discovering media content.
+            - **`browser`**: Handles browsing of media content.
+            - **`search`**: Implements search functionality for media content.
+    - **`common`**: Contains common functionality:
+        - **`config`**: Configuration files for the application.
+        - **`constants`**: Constants used throughout the application.
+        - **`decorators`**: Custom decorators used throughout the application.
+        - **`dtos`**: Data Transfer Objects (DTOs) for validating and transforming data.
+        - **`entities`**: Database entities representing the structure of the data.
+        - **`errors`**: Custom error classes for handling exceptions.
+        - **`filters`**: Exception filters for handling errors.
+        - **`interfaces`**: Interfaces defining the structure of data used in the application.
+        - **`pipes`**: Pipes for transforming and validating data.
+        - **`middlewares`**: Middlewares for processing requests.
+        - **`resouces`**: Contains base resources for the application such as base service.
+        - **`transforms`**: Transformers for converting data between different formats.
+        - **`types`**: Type definitions for various entities and data structures.
+        - **`utils`**: Utility functions used throughout the application.
+    - **`app.module.ts`**: The main application module that imports and configures all other modules.
+    - **`main.ts`**: The entry point of the application.
+
+### Environment Variables
+
+| Name                      | Description                                   |
+|---------------------------|-----------------------------------------------|
+| NODE_ENV                  | The environment in which the app is running.  |
+| PORT                      | The port to run the API on. Defaults to 3000. |
+| BASE_URL                  | The base URL of the application.              |
+| API_PREFIX                | The prefix for all API routes.                |
+| APP_NAME                  | The name of the application.                  |
+| DATABASE_URL              | The URL or host of the Postgres database.     |
+| DATABASE_TYPE             | The type of database (e.g., postgres).        |
+| DATABASE_HOST             | The database host.                            |
+| DATABASE_NAME             | The name of the database.                     |
+| DATABASE_USER             | The database user.                            |
+| DATABASE_PASSWORD         | The database password.                        |
+| DATABASE_PORT             | The database port.                            |
+| DATABASE_CA               | Database CA certificate (if applicable).      |
+| DATABASE_KEY              | Database key (if applicable).                 |
+| DATABASE_CERT             | Database certificate (if applicable).         |
+| RUN_MIGRATIONS            | Whether to run migrations on startup.         |
+| TYPEORM_SEEDING_FACTORIES | Path to TypeORM seeding factories.            |
+| TYPEORM_SEEDING_SEEDS     | Path to TypeORM seeding seeds.                |
+| REDIS_HOST                | Redis host.                                   |
+| REDIS_PORT                | Redis port.                                   |
+| REDIS_TTL                 | Redis time-to-live (in seconds).              |
+| REDIS_URL                 | Redis connection URL.                         |
+| REDIS_PASSWORD            | Redis password.                               |
+| REDIS_USERNAME            | Redis username.                               |
+| LOG_LEVEL                 | The level of logging (e.g., info, debug).     |
+
+## API Endpoints
+
+### CMS Endpoints
+
+The CMS module provides endpoints for managing TV programs, categories, and episodes. Below is a summary of the
+available endpoints:
+
+| Path                               | Description              |
+|------------------------------------|--------------------------|
+| POST /api/v1/cms/categories        | Create a new category.   |
+| GET /api/v1/cms/categories         | Get all categories.      |
+| GET /api/v1/cms/categories/{id}    | Get a category by ID.    |
+| PATCH /api/v1/cms/categories/{id}  | Update a category by ID. |
+| DELETE /api/v1/cms/categories/{id} | Delete a category by ID. |
+| POST /api/v1/cms/programs          | Create a new program.    |
+| GET /api/v1/cms/programs           | Get all programs.        |
+| GET /api/v1/cms/programs/{id}      | Get a program by ID.     |
+| PATCH /api/v1/cms/programs/{id}    | Update a program by ID.  |
+| DELETE /api/v1/cms/programs/{id}   | Delete a program by ID.  |
+| POST /api/v1/cms/episodes          | Create a new episode.    |
+| GET /api/v1/cms/episodes           | Get all episodes.        |
+| GET /api/v1/cms/episodes/{id}      | Get an episode by ID.    |
+| PATCH /api/v1/cms/episodes/{id}    | Update an episode by ID. |
+| DELETE /api/v1/cms/episodes/{id}   | Delete an episode by ID. |
+
+### Discover Endpoints
+
+The Discover module provides endpoints for browsing and searching media content. Below is a summary of the available
+endpoints:
+
+| Path                                                    | Description                       |
+|---------------------------------------------------------|-----------------------------------|
+| GET /api/v1/discover/search                             | Search media content.             |
+| GET /api/v1/discover/programs                           | Discover all programs.            |
+| GET /api/v1/discover/programs/{id}                      | Discover specific program         |
+| GET /api/v1/discover/programs/{id}/episodes             | Discover program episodes         |
+| GET /api/v1/discover/programs/{id}/episodes/{episodeId} | Discover specific program episode |
+| GET /api/v1/discover/episodes                           | Discover all episodes.            |
+| GET /api/v1/discover/episodes/{id}                      | Discover specific episode         |
+
+## References
+
+- [NestJS Documentation](https://docs.nestjs.com)
+- [TypeORM Documentation](https://typeorm.io)
+- [PostgreSQL Documentation](https://www.postgresql.org/docs/)
+- [Redis Documentation](https://redis.io/documentation)
+- [TypeScript Documentation](https://www.typescriptlang.org/docs/)
+- [OpenAPI Specification](https://swagger.io/specification/)

@@ -1,0 +1,12 @@
+FROM node:20-alpine
+
+WORKDIR /usr/src/app
+
+COPY package.json pnpm-lock.yaml ./
+RUN npm install -g pnpm && pnpm install
+
+COPY . .
+
+RUN pnpm run build
+
+ENTRYPOINT ["sh", "-c", "rm -rf ./database/migrations/* && npm run db migration:generate ./database/migrations/migration && pnpm run db migration:run && npm run seed:run ||  echo 'command1 failed'"]

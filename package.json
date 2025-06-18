@@ -23,11 +23,12 @@
     "schema:sync": "ts-node ./node_modules/typeorm/cli.js schema:sync",
     "dev:seed": "ts-node src/dev-seed.ts --max-old-space-size=4096",
     "typeorm": "nest build && ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js  -d typeorm.config.ts",
+    "db": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js  -d typeorm.config.ts",
     "db:generate": "typeorm migration:generate ./database/migrations/migration"
   },
   "dependencies": {
-    "@fastify/compress": "^8.0.3",
-    "@fastify/helmet": "^13.0.1",
+    "@fastify/compress": "^8.0.0",
+    "@fastify/helmet": "^13.0.0",
     "@keyv/redis": "^4.4.0",
     "@nestjs/cache-manager": "^3.0.1",
     "@nestjs/common": "^11.0.1",

@@ -7,8 +7,8 @@ import { AppModule } from './app.module';
 import { ConfigService } from '@nestjs/config';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
-import helmet from '@fastify/helmet';
-import compression from '@fastify/compress';
+// import  helmet from '@fastify/helmet';
+// import compression from '@fastify/compress';
 import { CustomValidationPipe } from './core/pipes/validation.pipe';
 
 async function bootstrap() {
@@ -36,15 +36,15 @@ async function bootstrap() {
   // Secure the application with Helmet
   // This will set various HTTP headers to help protect the app
   // from common vulnerabilities.
-  await app.register(helmet, {
-    contentSecurityPolicy: false,
-  });
+  // await app.register(helmet, {
+  //   contentSecurityPolicy: false,
+  // });
 
   // Enable Gzip compression for responses
   // This will help reduce the size of the response body,
   // improving performance, especially for larger payloads.
   // It is particularly useful for text-based responses like JSON.
-  await app.register(compression);
+  // await app.register(compression);
 
   // Todo: add rate limiting, etc.
 

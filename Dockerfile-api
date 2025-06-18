@@ -1,45 +1,24 @@
-FROM       node:18-alpine3.17
 
-RUN       apk add --no-cache python3 make g++
+# Use the official Node.js image as the base image
+FROM node:20
 
-RUN        apk add dumb-init
-ENV        NODE_ENV=production
+# Set the working directory inside the container
+WORKDIR /usr/src/app
 
+# Copy package.json and package-lock.json to the working directory
+COPY package*.json ./
 
-# Workdir
-WORKDIR    /usr/src/backend-api
+# Install the application dependencies
+RUN npm install
 
-# Copy and install production packages
-COPY package.json package.json
+# Copy the rest of the application files
+COPY . .
 
- #RUN npm install --save-dev tsconfig-paths
-
-RUN        npm install
-RUN         npm install @faker-js/faker --save-dev
-
-COPY        . .
-
-RUN         mkdir -p ./src/database/migrations
-
-COPY       entrypoint.sh /db-init-scripts/
-# RUN        chmod +x /db-init-scripts/entrypoint.sh
-
+# Build the NestJS application
 RUN npm run build
 
-# RUN npm run typeorm migration:generate ./src/database/migrations/Initial
+# Expose the application port
+EXPOSE 3000
 
-# RUN npm run typeorm migration:run
-
-# Running port is configured through API_PORT env variable
-EXPOSE     8080 8080
-
-
-RUN chmod +x docker-entrypoint.sh
-
-ENV NODE_OPTIONS=--max_old_space_size=4096
-
-
-COPY init.sql /docker-entrypoint-initdb.d/
-
-# Start the server using the production build
-#CMD [ "dumb-init", "node", "dist/main.js" ]
+# Command to run the application
+CMD ["node", "dist/main"]

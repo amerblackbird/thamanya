@@ -9,3 +9,9 @@ db-migrate:
 
 db-seed:
 	pnpm run seed
+
+up:
+	docker-compose up -d --build
+
+down:
+	docker-compose down
