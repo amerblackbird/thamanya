@@ -8,9 +8,9 @@ import {
   IsString,
   IsUUID,
 } from 'class-validator';
-import { MAX_PAGINATION_LIMIT } from '../../../../core/resources/pagination';
+import { MAX_PAGINATION_LIMIT } from '../../../../core/resources';
 import { ProgramType } from '../types';
-import { IsLanguageCode } from '../../../../core/decorators/language.decorator';
+import { IsLanguageCode } from '../../../../core/decorators';
 import { Transform } from 'class-transformer';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 

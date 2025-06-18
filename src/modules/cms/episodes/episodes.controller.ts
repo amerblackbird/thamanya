@@ -15,10 +15,17 @@ import { EpisodesService } from './episodes.service';
 import { CreateEpisodeDto } from './dto/create-episode.dto';
 import { UpdateEpisodeDto } from './dto/update-episode.dto';
 import { ApiTags } from '@nestjs/swagger';
-import { RequestInfo } from '../../../core/decorators';
+import {
+  CreateApiResponse, DeleteApiResponse,
+  FindOneApiResponse,
+  PaginationApiResponse,
+  RequestInfo,
+  UpdateApiResponse,
+} from '../../../core/decorators';
 import { IRequestOptions } from '../../../core/interfaces';
 import { GlobalExceptionFilter } from '../../../core/filters';
 import { PaginationDto } from '../../../core/dtos';
+import { EpisodeSerializer } from './serializers/episode.serializer';
 
 @ApiTags('Episodes')
 @Controller('/cms/episodes')
@@ -27,6 +34,7 @@ export class EpisodesController {
   constructor(private readonly episodesService: EpisodesService) {}
 
   @Post()
+  @CreateApiResponse(EpisodeSerializer)
   async create(
     @Body(new ValidationPipe({ transform: true, whitelist: true }))
     createEpisodeDto: CreateEpisodeDto,
@@ -37,6 +45,7 @@ export class EpisodesController {
   }
 
   @Get()
+  @PaginationApiResponse(EpisodeSerializer, 'episodes')
   findAll(
     @Query(new ValidationPipe({ transform: true, whitelist: true }))
     paginationDto: PaginationDto,
@@ -46,6 +55,7 @@ export class EpisodesController {
   }
 
   @Get(':id')
+  @FindOneApiResponse(EpisodeSerializer)
   async findOne(
     @Param('id', new ParseUUIDPipe({})) id: string,
     @RequestInfo() reqInfo: IRequestOptions,
@@ -55,6 +65,7 @@ export class EpisodesController {
   }
 
   @Patch(':id')
+  @UpdateApiResponse(EpisodeSerializer)
   async update(
     @Param('id', new ParseUUIDPipe({})) id: string,
     @Body(new ValidationPipe({ transform: true, whitelist: true }))
@@ -70,6 +81,7 @@ export class EpisodesController {
   }
 
   @Delete(':id')
+  @DeleteApiResponse(EpisodeSerializer)
   async remove(
     @Param('id', new ParseUUIDPipe({})) id: string,
     @RequestInfo() reqInfo: IRequestOptions,

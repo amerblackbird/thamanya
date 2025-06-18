@@ -16,9 +16,17 @@ import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { GlobalExceptionFilter } from '../../../core/filters';
-import { RequestInfo } from '../../../core/decorators';
+import {
+  CreateApiResponse,
+  DeleteApiResponse,
+  FindOneApiResponse,
+  PaginationApiResponse,
+  RequestInfo,
+  UpdateApiResponse,
+} from '../../../core/decorators';
 import { IRequestOptions } from '../../../core/interfaces';
 import { PaginationDto } from '../../../core/dtos';
+import { CategorySerializer } from './serializers/category.serializer';
 
 @ApiTags('Categories')
 @Controller('/cms/categories')
@@ -27,6 +35,7 @@ export class CategoriesController {
   constructor(private readonly categoriesService: CategoriesService) {}
 
   @Post()
+  @CreateApiResponse(CategorySerializer)
   async create(
     @Body(new ValidationPipe({ transform: true, whitelist: true }))
     createCategoryDto: CreateCategoryDto,
@@ -40,6 +49,7 @@ export class CategoriesController {
   }
 
   @Get()
+  @PaginationApiResponse(CategorySerializer, 'categories')
   findAll(
     @Query(new ValidationPipe({ transform: true, whitelist: true }))
     paginationDto: PaginationDto,
@@ -49,6 +59,7 @@ export class CategoriesController {
   }
 
   @Get(':id')
+  @FindOneApiResponse(CategorySerializer)
   async findOne(
     @Param('id', new ParseUUIDPipe({})) id: string,
     @RequestInfo() reqInfo: IRequestOptions,
@@ -58,6 +69,7 @@ export class CategoriesController {
   }
 
   @Patch(':id')
+  @UpdateApiResponse(CategorySerializer)
   async update(
     @Param('id', new ParseUUIDPipe({})) id: string,
     @Body(new ValidationPipe({ transform: true, whitelist: true }))
@@ -73,6 +85,7 @@ export class CategoriesController {
   }
 
   @Delete(':id')
+  @DeleteApiResponse(CategorySerializer)
   async remove(
     @Param('id', new ParseUUIDPipe({})) id: string,
     @RequestInfo() reqInfo: IRequestOptions,

@@ -1,7 +1,7 @@
 import { OmitType, PartialType } from '@nestjs/mapped-types';
 import { CreateEpisodeDto } from './create-episode.dto';
 import { ApiPropertyOptional } from '@nestjs/swagger';
-import { IsBoolean } from 'class-validator';
+import { IsBoolean, IsOptional } from 'class-validator';
 import { Transform } from 'class-transformer';
 import { BoolTransform } from '../../../../core/transforms/bool.transform';
 
@@ -10,9 +10,9 @@ export class UpdateEpisodeDto extends PartialType(
 ) {
   @ApiPropertyOptional({
     type: Boolean,
-    description: 'Is the category active?',
+    description: 'Is the episode active?',
   })
-  @IsBoolean()
+  @IsOptional()
   @Transform(BoolTransform)
   @IsBoolean()
   active?: boolean;
