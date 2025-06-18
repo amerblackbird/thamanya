@@ -1,8 +1,8 @@
 import { Repository } from 'typeorm';
 import { Logger } from '@nestjs/common';
-import { Program } from '../../src/programs/entities/program.entity';
-import { Episode } from '../../src/episodes/entities/episode.entity';
-import { ProgramType } from '../../src/programs/types';
+import { Program } from '../../src/modules/cms/programs/entities/program.entity';
+import { Episode } from '../../src/modules/cms/episodes/entities/episode.entity';
+import { ProgramType } from '../../src/modules/cms/programs/types';
 
 const programsSeedData = [
   {

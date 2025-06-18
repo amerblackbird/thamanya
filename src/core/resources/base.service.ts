@@ -56,7 +56,7 @@ export class BaseService<T extends BaseDataEntity> {
     options: ICreateOptions & {
       findMatch?: ResBuilder<T>;
       createDto: ResBuilder<T>;
-      onCreated?: (record: T) => void;
+      onCreated?: (record: T) => Promise<void>;
     },
   ): Promise<T> {
     const { createDto, findMatch, onCreated, ...opts } = options;
@@ -87,7 +87,7 @@ export class BaseService<T extends BaseDataEntity> {
     });
 
     // Call onCreated callback if provided
-    onCreated?.(result);
+    await onCreated?.(result);
 
     return result;
   }
@@ -304,7 +304,7 @@ export class BaseService<T extends BaseDataEntity> {
     id: string,
     type: { new (): T },
     options: IUpdateOptions<T>,
-  ): Promise<RecordMapResult<T>> {
+  ): Promise<T> {
     const { lang, dto, searchMatch, unique, ...rest } = options;
 
     try {

@@ -7,6 +7,7 @@ export class GlobalExceptionFilter implements ExceptionFilter {
   constructor() {}
 
   catch(exception: BusinessError<any, any>, host: ArgumentsHost): void {
+    console.log(exception);
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<FastifyReply>();
     const req = ctx.getRequest<Request>();

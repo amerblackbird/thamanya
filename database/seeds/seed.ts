@@ -1,8 +1,8 @@
 import CategoriesSeed from './categories';
 import AppManager from '../../typeorm.config';
 import ProgramsSeed from './programs';
-import { Program } from '../../src/programs/entities/program.entity';
-import { Category } from '../../src/categories/entities/category.entity';
+import { Program } from '../../src/modules/cms/programs/entities/program.entity';
+import { Category } from '../../src/modules/cms/categories/entities/category.entity';
 
 AppManager.initialize()
   .then(async () => {

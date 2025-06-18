@@ -3,20 +3,20 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { SharedModule } from './shared/shared.module';
-import { ProgramsModule } from './programs/programs.module';
-import { EpisodesModule } from './episodes/episodes.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { CacheModule } from '@nestjs/cache-manager';
 import { CacheableMemory } from 'cacheable';
 import { createKeyv } from '@keyv/redis';
 import { Keyv } from 'keyv';
-import { CategoriesModule } from './categories/categories.module';
+import { CmsModule } from './modules/cms/cms.module';
+import { DiscoveryModule } from './modules/discovery/discovery.module';
 
 import databaseConfig from './core/config/database.config';
 import authConfig from './core/config/auth.config';
 import appConfig from './core/config/app.config';
 import cacheConfig from './core/config/cache.config';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
   imports: [
@@ -69,10 +69,10 @@ import cacheConfig from './core/config/cache.config';
         },
       ],
     }),
+    ScheduleModule.forRoot(),
     SharedModule,
-    ProgramsModule,
-    EpisodesModule,
-    CategoriesModule,
+    CmsModule,
+    DiscoveryModule,
   ],
   controllers: [AppController],
   providers: [AppService],
